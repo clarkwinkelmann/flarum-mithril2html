@@ -12,12 +12,13 @@ use Illuminate\Contracts\View\Factory;
 
 class ComponentTest extends TestCase
 {
+    const DEV_SERVER_URL = 'http://localhost:8080';
+
     public function setUp(): void
     {
         parent::setUp();
 
-        // This is the URL to the PHP development server
-        $this->config('url', 'http://localhost:8080');
+        $this->config('url', self::DEV_SERVER_URL);
 
         // We pre-set the browsershot token because the transaction prevents sharing it with the other process
         //$this->setting('mithril2html.token', 'testing');
@@ -53,6 +54,11 @@ class ComponentTest extends TestCase
     public function test_whoami()
     {
         $this->assertEquals('<span>admin</span>', $this->getRenderer()->render(new AnonymousComponent('whoami', null, User::find(1))));
+    }
+
+    public function test_internal_link()
+    {
+        $this->assertEquals('<a href="' . self::DEV_SERVER_URL . '/settings">Settings</a>', $this->getRenderer()->render(new AnonymousComponent('internal-link',)));
     }
 
     public function test_blade()

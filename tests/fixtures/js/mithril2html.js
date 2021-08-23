@@ -1,3 +1,4 @@
+import Link from 'flarum/common/components/Link';
 import Page from 'flarum/common/components/Page';
 
 class HelloWorld extends Page {
@@ -24,6 +25,14 @@ class WhoAmI extends Page {
     }
 }
 
+class InternalLink extends Page {
+    view() {
+        return m(Link, {
+            href: app.route('settings'),
+        }, 'Settings');
+    }
+}
+
 app.initializers.add('mithril2html-test', function () {
     app.routes.helloWorld = {
         path: '/hello-world',
@@ -36,5 +45,9 @@ app.initializers.add('mithril2html-test', function () {
     app.routes.whoami = {
         path: '/whoami',
         component: WhoAmI,
+    };
+    app.routes.internalLink = {
+        path: '/internal-link',
+        component: InternalLink,
     };
 });
