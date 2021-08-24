@@ -17,7 +17,7 @@ It won't do anything once already registered.
 
 ```php
 return [
-    new \ClarkWinkelmann\Mithril2Html\Setup(),
+    new \ClarkWinkelmann\Mithril2Html\Extend\Setup(),
     
     // Your other extenders
 ];
@@ -49,6 +49,14 @@ If you created a separate bundle (not `forum`), register it using Flarum's `Fron
 
 ```php
     (new Frontend('mithril2html'))
+        ->js(__DIR__ . '/js/dist/mithril2html.js'),
+```
+
+If you already have a forum bundle with exports, Flarum will unfortunately override all `forum` exports with `mithril2html` exports (even if you have none).
+To work around this, a different extender is available just for javascript:
+
+```php
+    (new \ClarkWinkelmann\Mithril2Html\Extend\FrontendNoConflict('mithril2html'))
         ->js(__DIR__ . '/js/dist/mithril2html.js'),
 ```
 
@@ -119,6 +127,8 @@ class InvoiceComponent implements ComponentInterface {
 ## Known issues
 
 At the moment, passing an actor will authenticate the base request and preloaded `apiDocument`, but not any additional API request the component will make after page load.
+
+If you render a page with user-generated content and an XSS is possible, the attacker might be able to read any API GET endpoint as administrator by first stealing the mithril2html internal token and then using that token to preload arbitrary GET endpoints.
 
 ## Tests
 

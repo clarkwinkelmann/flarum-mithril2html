@@ -1,6 +1,6 @@
 <?php
 
-use ClarkWinkelmann\Mithril2Html\Setup;
+use ClarkWinkelmann\Mithril2Html\Extend\Setup;
 use Flarum\Extend\ExtenderInterface;
 use Flarum\Extend\Frontend;
 use Flarum\Extension\Extension;

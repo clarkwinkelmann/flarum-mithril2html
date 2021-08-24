@@ -1,7 +1,10 @@
 <?php
 
-namespace ClarkWinkelmann\Mithril2Html;
+namespace ClarkWinkelmann\Mithril2Html\Extend;
 
+use ClarkWinkelmann\Mithril2Html\Content\AssetsJsOnly;
+use ClarkWinkelmann\Mithril2Html\Controller;
+use ClarkWinkelmann\Mithril2Html\Renderer;
 use Flarum\Extend;
 use Flarum\Extension\Extension;
 use Flarum\Frontend\Content;
@@ -23,7 +26,7 @@ class Setup implements Extend\ExtenderInterface
         self::$configured = true;
 
         (new Extend\Frontend('mithril2html'))
-            ->js(__DIR__ . '/../js/dist/mithril2html.js')
+            ->js(__DIR__ . '/../../js/dist/mithril2html.js')
             ->extend($container);
 
         (new Extend\Routes('forum'))
@@ -38,8 +41,8 @@ class Setup implements Extend\ExtenderInterface
                 $document->layoutView = 'flarum::frontend.forum';
             });
 
-            $frontend->content($container->make(AssetsContentJsOnly::class)->forFrontend('forum'));
-            $frontend->content($container->make(AssetsContentJsOnly::class)->forFrontend('mithril2html'));
+            $frontend->content($container->make(AssetsJsOnly::class)->forFrontend('forum'));
+            $frontend->content($container->make(AssetsJsOnly::class)->forFrontend('mithril2html'));
             $frontend->content($container->make(Content\CorePayload::class));
             $frontend->content($container->make(Content\Meta::class));
 

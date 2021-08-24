@@ -1,6 +1,6 @@
 <?php
 
-namespace ClarkWinkelmann\Mithril2Html;
+namespace ClarkWinkelmann\Mithril2Html\Content;
 
 use Flarum\Foundation\Config;
 use Flarum\Frontend\Compiler\CompilerInterface;
@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  * Same as Flarum's Flarum\Frontend\Content\Assets but it skips CSS
  * This is to improve performance as there's no need for CSS during headless HTML rendering
  */
-class AssetsContentJsOnly
+class AssetsJsOnly
 {
     protected $container;
     protected $config;

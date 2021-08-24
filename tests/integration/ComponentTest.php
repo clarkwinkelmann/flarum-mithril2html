@@ -4,7 +4,7 @@ namespace integration;
 
 use ClarkWinkelmann\Mithril2Html\AnonymousComponent;
 use ClarkWinkelmann\Mithril2Html\Renderer;
-use ClarkWinkelmann\Mithril2Html\Setup;
+use ClarkWinkelmann\Mithril2Html\Extend\Setup;
 use Flarum\Extend\View;
 use Flarum\Testing\integration\TestCase;
 use Flarum\User\User;
