@@ -43,5 +43,10 @@
         "test": "Runs all tests.",
         "test:integration": "Runs all integration tests.",
         "test:setup": "Sets up a database for use with integration tests. Execute this only once."
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x.x-dev"
+        }
     }
 }
