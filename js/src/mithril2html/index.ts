@@ -10,7 +10,7 @@ import Link from 'flarum/common/components/Link';
 
 class Index extends Page {
     view() {
-        return m('h1', 'Mithril2Html');
+        return m('p', 'There should be some content here. It probably failed rendering.');
     }
 }
 
