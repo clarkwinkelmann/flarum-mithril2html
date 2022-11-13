@@ -2,6 +2,7 @@
 
 namespace ClarkWinkelmann\Mithril2Html;
 
+use ClarkWinkelmann\Mithril2Html\Exception\RenderFailException;
 use Flarum\Http\UrlGenerator;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Str;
@@ -19,6 +20,9 @@ class Renderer
         $this->url = $url;
     }
 
+    protected $browsershot = null;
+    protected $html = null;
+
     public function render(ComponentInterface $component): string
     {
         $token = $this->settings->get('mithril2html.token');
@@ -33,32 +37,42 @@ class Renderer
 
         $actor = $component->actor();
 
-        $html = Browsershot::url($endpoint)
+        $this->browsershot = Browsershot::url($endpoint)
             ->setExtraHttpHeaders([
                 'X-Browsershot-Auth' => $token,
                 'X-Browsershot-User' => $actor ? (string)$actor->id : '',
                 'X-Browsershot-Preload' => $component->preload() ?? '',
-            ])
-            ->bodyHtml();
+            ]);
+        $this->html = $this->browsershot->bodyHtml();
 
         $selector = $component->selector();
 
         if (!$selector) {
-            return trim($html);
+            return trim($this->html);
         }
 
-        $crawler = new Crawler($html);
+        $crawler = new Crawler($this->html);
 
         $node = $crawler->filter($selector);
 
         if ($node->count() === 0) {
             if ($crawler->filter('#app')->count() === 0) {
-                throw new \Exception("Could not find element with selector $selector nor #app on $endpoint. The page was probably blocked by the webserver configuration or a proxy");
+                throw new RenderFailException("Could not find element with selector $selector nor #app on $endpoint. The page was probably blocked by the webserver configuration or a proxy");
             }
 
-            throw new \Exception("Could not find element with selector $selector on $endpoint");
+            throw new RenderFailException("Could not find element with selector $selector on $endpoint");
         }
 
         return trim($node->html());
+    }
+
+    public function getFullHtml(): ?string
+    {
+        return $this->html;
+    }
+
+    public function getBrowsershotInstance(): ?Browsershot
+    {
+        return $this->browsershot;
     }
 }

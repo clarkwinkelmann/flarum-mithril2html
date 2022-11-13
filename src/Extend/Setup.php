@@ -2,6 +2,7 @@
 
 namespace ClarkWinkelmann\Mithril2Html\Extend;
 
+use ClarkWinkelmann\Mithril2Html\Console\TroubleshootCommand;
 use ClarkWinkelmann\Mithril2Html\Content\AssetsJsOnly;
 use ClarkWinkelmann\Mithril2Html\Controller;
 use ClarkWinkelmann\Mithril2Html\Renderer;
@@ -24,6 +25,10 @@ class Setup implements Extend\ExtenderInterface
         }
 
         self::$configured = true;
+
+        (new Extend\Console())
+            ->command(TroubleshootCommand::class)
+            ->extend($container);
 
         (new Extend\Frontend('mithril2html'))
             ->js(__DIR__ . '/../../js/dist/mithril2html.js')

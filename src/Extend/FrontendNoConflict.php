@@ -63,14 +63,14 @@ class FrontendNoConflict implements ExtenderInterface
             if ($this->js) {
                 $assets->js(function (SourceCollector $sources) use ($moduleName) {
                     $sources->addString(function () {
-                        return 'var module={}';
+                        return 'var module={};';
                     });
                     $sources->addFile($this->js);
                     $sources->addString(function () use ($moduleName) {
                         // This is the only difference with the original extender
                         // We merge the keys of the first-level objects together
                         // In Flamarkt that key is always the frontend name
-                        return "flarum.extensions['$moduleName']={...flarum.extensions['$moduleName'],...module.exports}";
+                        return "flarum.extensions['$moduleName']={...flarum.extensions['$moduleName'],...module.exports};";
                     });
                 });
             }
