@@ -14,6 +14,18 @@ class Index extends Page {
     }
 }
 
+class Test extends Page {
+    view() {
+        return [
+            m('p', 'This content was successfully generated via Mithril and Headless Chrome.'),
+            '\n',
+            m('p', ['User Agent: ', m('code', navigator.userAgent)]),
+            '\n',
+            m('p', 'Date: ' + (new Date())),
+        ];
+    }
+}
+
 class NotFound extends Page {
     view() {
         return m('p', 'There was a problem rendering this content. The component was not found.');
@@ -21,7 +33,7 @@ class NotFound extends Page {
 }
 
 // We override the mount method for two reasons
-// First, to use hashbang routing, which requires extending in Application instead of ForumApplication (or we could need to rewrite a lot)
+// First, to use hashbang routing, which requires extending in Application instead of ForumApplication (or we would need to rewrite a lot)
 // Second, to remove unneeded features like modals/alerts/header
 override(ForumApplication.prototype, 'mount', function (this: ForumApplication) {
     this.pane = new Pane(document.getElementById('app'));
@@ -35,6 +47,10 @@ override(ForumApplication.prototype, 'mount', function (this: ForumApplication) 
     this.routes.index = {
         path: '/',
         component: Index,
+    };
+    this.routes.test = {
+        path: '/test',
+        component: Test,
     };
     this.routes.notFound = {
         path: '/:404...',

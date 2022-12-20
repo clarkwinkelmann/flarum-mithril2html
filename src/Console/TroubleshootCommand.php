@@ -9,12 +9,13 @@ use Illuminate\Console\Command;
 
 class TroubleshootCommand extends Command
 {
-    protected $signature = 'mithril2html:troubleshoot {route} {--preload=} {--actor=} {--selector=#content}';
+    protected $signature = 'mithril2html:troubleshoot {route=test} {--preload=} {--actor=} {--selector=#content}';
     protected $description = 'Render a component from the command line for testing';
 
     public function handle(Renderer $renderer, UserRepository $repository)
     {
-        $actor = $this->hasOption('actor') ? $repository->findOrFail($this->option('actor')) : null;
+        $actorId = $this->option('actor');
+        $actor = $actorId ? $repository->findOrFail($actorId) : null;
 
         $this->line("\n\n## Output HTML\n");
 
