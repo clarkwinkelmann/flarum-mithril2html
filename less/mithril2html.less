@@ -1,0 +1,17 @@
+// Hide the Flarum header
+// Even though we don't mount the primary and secondary headers, there is still the built-in <h1> tag
+// We only hide it and not remove it to avoid any error in case an extension expects #header-navigation, #home-link, #header-primary or #header-secondary to exist
+#drawer {
+    display: none;
+}
+
+// Hide the area that Flarum keeps above the content for the header
+.App {
+    padding-top: 0;
+    padding-bottom: 0;
+    min-height: 0;
+}
+
+.App-content {
+    border-top: none;
+}

@@ -124,6 +124,23 @@ class InvoiceComponent implements ComponentInterface {
 @mithril2html(new InvoiceComponent($invoice))
 ```
 
+## PDF and Screenshot
+
+While it was not the primary use case for this extension, the `Renderer` class also exposes a `browsershot` method that gives access to a pre-configured but unused Browsershot instance.
+
+When using that method, the `selector` property is ignored and the entire page/viewport is used.
+Browsershot methods must be used to configure the output.
+
+Example:
+
+```php
+$component = new ClarkWinkelmann\Mithril2Html\AnonymousComponent('hello-world');
+echo resolve(ClarkWinkelmann\Mithril2Html\Renderer::class)->browsershot($component)->landscape()->pdf();
+```
+
+The page CSS is not loaded when calling `Renderer::render` but is loaded by default when calling `Renderer::browsershot`.
+It can be disabled by passing `false` as the second argument like `$renderer->browsershot($component, false)`.
+
 ## Known issues
 
 At the moment, passing an actor will authenticate the base request and preloaded `apiDocument`, but not any additional API request the component will make after page load.

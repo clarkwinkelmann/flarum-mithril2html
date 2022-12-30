@@ -24,9 +24,9 @@ use Illuminate\Contracts\Container\Container;
  */
 class FrontendNoConflict implements ExtenderInterface
 {
-    private $frontend;
+    private string $frontend;
 
-    private $js;
+    private ?string $js = null;
 
     /**
      * @param string $frontend The name of the frontend.
@@ -35,7 +35,6 @@ class FrontendNoConflict implements ExtenderInterface
     {
         $this->frontend = $frontend;
     }
-
 
     /**
      * Add a JavaScript file to load in the frontend.

@@ -16,7 +16,7 @@ use Illuminate\View\Compilers\BladeCompiler;
 
 class Setup implements Extend\ExtenderInterface
 {
-    static $configured = false;
+    static bool $configured = false;
 
     public function extend(Container $container, Extension $extension = null)
     {
@@ -32,6 +32,7 @@ class Setup implements Extend\ExtenderInterface
 
         (new Extend\Frontend('mithril2html'))
             ->js(__DIR__ . '/../../js/dist/mithril2html.js')
+            ->css(__DIR__ . '/../../less/mithril2html.less')
             ->extend($container);
 
         (new Extend\Routes('forum'))

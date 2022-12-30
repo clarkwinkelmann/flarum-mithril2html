@@ -6,10 +6,10 @@ use Flarum\User\User;
 
 class AnonymousComponent implements ComponentInterface
 {
-    protected $route;
-    protected $preload;
-    protected $actor;
-    protected $selector;
+    protected string $route;
+    protected ?string $preload;
+    protected ?User $actor;
+    protected string $selector;
 
     public function __construct(string $route, string $preload = null, User $actor = null, string $selector = '#content')
     {

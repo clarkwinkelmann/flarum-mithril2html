@@ -11,8 +11,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Renderer
 {
-    protected $settings;
-    protected $url;
+    protected SettingsRepositoryInterface $settings;
+    protected UrlGenerator $url;
 
     public function __construct(SettingsRepositoryInterface $settings, UrlGenerator $url)
     {
@@ -20,10 +20,10 @@ class Renderer
         $this->url = $url;
     }
 
-    protected $browsershot = null;
-    protected $html = null;
+    protected ?Browsershot $browsershot = null;
+    protected ?string $html = null;
 
-    public function render(ComponentInterface $component): string
+    protected function prepareBrowsershot(ComponentInterface $component, bool $withCSS = false): string
     {
         $token = $this->settings->get('mithril2html.token');
 
@@ -42,7 +42,22 @@ class Renderer
                 'X-Browsershot-Auth' => $token,
                 'X-Browsershot-User' => $actor ? (string)$actor->id : '',
                 'X-Browsershot-Preload' => $component->preload() ?? '',
+                'X-Browsershot-CSS' => $withCSS ? '1' : '0',
             ]);
+
+        return $endpoint;
+    }
+
+    /**
+     * Render a component to HTML code
+     * @param ComponentInterface $component The component to render
+     * @return string The HTML of the tag matched by the component selector, or the entire HTML document if no selector is provided
+     * @throws RenderFailException If Browsershot ran successfully but Mithril2Html encountered an issue with the output
+     */
+    public function render(ComponentInterface $component): string
+    {
+        $endpoint = $this->prepareBrowsershot($component);
+
         $this->html = $this->browsershot->bodyHtml();
 
         $selector = $component->selector();
@@ -66,11 +81,31 @@ class Renderer
         return trim($node->html());
     }
 
+    /**
+     * Get a Browsershot instance for a component that can be used for a customized output
+     * @param ComponentInterface $component The component to render
+     * @param bool $withCSS Whether to load the CSS for forum+mithril2html frontends in the page
+     * @return Browsershot An unused Browsershot instance pre-configured with the internal URL to render the given component
+     */
+    public function browsershot(ComponentInterface $component, bool $withCSS = true): Browsershot
+    {
+        $this->prepareBrowsershot($component, $withCSS);
+
+        return $this->browsershot;
+    }
+
+    /**
+     * After render() as been called, this method offers a quick access to the entire page HTML output.
+     */
     public function getFullHtml(): ?string
     {
         return $this->html;
     }
 
+    /**
+     * After render() has been called, this method offers access to the browsershot instance that was used.
+     * This allows accessing the console and network output.
+     */
     public function getBrowsershotInstance(): ?Browsershot
     {
         return $this->browsershot;
