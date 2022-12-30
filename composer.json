@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "flarum/core": "^1.2",
         "spatie/browsershot": "^3.0",
         "symfony/dom-crawler": "^5.0",
